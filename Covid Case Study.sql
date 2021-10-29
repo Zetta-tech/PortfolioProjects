@@ -66,7 +66,7 @@ ORDER BY percent_population_affected DESC
 
 SELECT 
 	location, 
-	MAX(CAST(total_deaths AS INT)) AS Total_death_count
+	MAX(CAST(total_deaths AS INT)) AS Total_death_count --total_deaths stored as NVARCHAR
 FROM 
 	FolioProject..CovidDeaths
 WHERE continent IS NOT NULL
