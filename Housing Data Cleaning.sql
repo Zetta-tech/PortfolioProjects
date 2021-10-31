@@ -6,15 +6,15 @@
 SELECT *
 FROM FolioProject..NashvilleHousing
 
--- Changing	Date Format to DATE from DATETIME and Updating Table
+-- Changing Date Format to DATE from DATETIME and Updating Table
 
 SELECT SaleDateConverted, CONVERT(DATE, SaleDate) AS NewSaleDate
 FROM FolioProject..NashvilleHousing
 
 /* NOT WORKING DUE TO SOME UNKNOWN ERROR
 
-UPDATE FolioProject..NashvilleHousing
-SET SaleDate = CONVERT(DATE, SaleDate)
+	UPDATE FolioProject..NashvilleHousing
+	SET SaleDate = CONVERT(DATE, SaleDate)
 
 */
 
@@ -104,7 +104,6 @@ ADD PropertySplitCity nvarchar(255);
 
 UPDATE NashvilleHousing
 SET PropertySplitCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1, LEN(PropertyAddress))
----------------------------------------------------------------------------------------
 
 /* 
 	SHORTER WAY TO SPLIT ADDRESSES
@@ -116,20 +115,20 @@ SELECT PARSENAME(REPLACE(PropertyAddress, ',', '.'), 1) AS ParsePropertySplitCit
 FROM FolioProject..NashvilleHousing
 
 /*
-	SAVE TABLE AS
+		SAVE TABLE AS
 
-ALTER TABLE NashvilleHousing
-ADD ParsePropertySplitAddress nvarchar(255);
+	ALTER TABLE NashvilleHousing
+	ADD ParsePropertySplitAddress nvarchar(255);
 
-UPDATE NashvilleHousing
-SET ParsePropertySplitAddress = PARSENAME(REPLACE(PropertyAddress, ',', '.'), 2)
+	UPDATE NashvilleHousing
+	SET ParsePropertySplitAddress = PARSENAME(REPLACE(PropertyAddress, ',', '.'), 2)
 
 
-ALTER TABLE NashvilleHousing
-ADD ParsePropertySplitCity nvarchar(255);
+	ALTER TABLE NashvilleHousing
+	ADD ParsePropertySplitCity nvarchar(255);
 
-UPDATE NashvilleHousing
-SET ParsePropertySplitCity = PARSENAME(REPLACE(PropertyAddress, ',', '.'), 1)
+	UPDATE NashvilleHousing
+	SET ParsePropertySplitCity = PARSENAME(REPLACE(PropertyAddress, ',', '.'), 1)
 */
 
 -- Splitting OwnerAddress into individual columns (Address, City, State)
@@ -189,17 +188,18 @@ SET
 -- Removing Duplicates
 
 /* Using Row Number to identify duplicates due to the amount of data and the ease in doing it */
+
 WITH RowNumCTE AS( --Using CTE to pick out just the dupicates using WHERE statement
 	SELECT 
 		*,
 		ROW_NUMBER() OVER(
-							PARTITION BY ParcelID,
-										 PropertyAddress,
-										 SalePrice,
-										 SaleDate,
-										 LegalReference
-							ORDER BY UniqueID
-							) row_num
+					PARTITION BY ParcelID,
+						     PropertyAddress,
+						     SalePrice,
+						     SaleDate,
+						     LegalReference
+					ORDER BY UniqueID
+				) row_num
 	FROM FolioProject..NashvilleHousing
 )
 /*
@@ -210,6 +210,7 @@ WITH RowNumCTE AS( --Using CTE to pick out just the dupicates using WHERE statem
 */
 
 /* DELETE DATA IF ONLY NECESSARY */
+
 DELETE
 FROM RowNumCTE
 WHERE row_num > 1
