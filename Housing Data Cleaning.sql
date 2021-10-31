@@ -1,3 +1,7 @@
+/*
+	EXPLORATORY ANALYSIS OF PROPERTY DATA
+*/
+
 -- Cleaning the Data
 SELECT *
 FROM FolioProject..NashvilleHousing
